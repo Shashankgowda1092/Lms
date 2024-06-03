@@ -1,0 +1,9 @@
+.checkmark-animation img {
+    animation: checkmark-animation 2s ease-in-out; /* Adjust the duration as needed */
+  }
+  
+  @keyframes checkmark-animation {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  

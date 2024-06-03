@@ -1,0 +1,127 @@
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { UserPlusIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import React from "react";
+import {
+    Input,
+    Button,
+    CardHeader,
+    Tabs,
+    TabsHeader,
+    Tab,
+    Tooltip,
+    IconButton,
+    Typography,
+} from "@material-tailwind/react";
+import PropTypes from "prop-types";
+
+const TABS = [
+    {
+        label: "All",
+        value: "All",
+    },
+    {
+        label: "Active",
+        value: "Active",
+    },
+    {
+        label: "In-Active",
+        value: "Non-Active",
+    },
+];
+
+const BatchHeaderTrainer = ({
+    toggleHandler,
+    card,
+    onStatusChange,
+    searchHandler,
+    changeCardLayout,
+}) => {
+    const [status, setStatus] = useState("All");
+
+    useEffect(() => {
+        setStatus("All");
+    }, []); // Run once when component mounts
+
+    const handlerTabClick = (value) => {
+        setStatus(value);
+        onStatusChange(value);
+    };
+
+    return (
+        <CardHeader floated={false} shadow={false} className="rounded-none">
+            <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 ml-4 sm:ml-12">
+                <div>
+                    <Typography variant="h5" color="blue-gray">
+                        Course List
+                    </Typography>
+                    <Typography color="gray" className="mt-1 font-normal">
+                        See information about all Courses
+                    </Typography>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                    {card && (
+                        <Tooltip content="Change Card Layout">
+                            <span
+                                onClick={() => {
+                                    changeCardLayout();
+                                }}
+                            >
+                                <IconButton variant="text">
+                                    <img
+                                        width="50"
+                                        height="50"
+                                        src="https://img.icons8.com/ios/50/rows.png"
+                                        alt="rows"
+                                    />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                    )}
+                   
+
+                </div>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 ml-4 sm:ml-12">
+                <Tabs value={status} className="w-full sm:w-72 md:w-96">
+                    <TabsHeader>
+                        {TABS.map(({ label, value }) => (
+                            <Tab
+                                key={value}
+                                value={value}
+                                onClick={() => handlerTabClick(value)}
+                            >
+                                &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                            </Tab>
+                        ))}
+                    </TabsHeader>
+                </Tabs>
+                <div className="w-full sm:w-72 md:w-96 mr-5">
+                    <label
+                        htmlFor="search-input"
+                        className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal ..."
+                    ></label>
+                    <Input
+                        id="search-input" // Add an id to the Input component
+                        label="Search"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                        className="w-full"
+                        onChange={searchHandler}
+                    />
+                </div>
+            </div>
+        </CardHeader>
+    );
+};
+
+BatchHeaderTrainer.propTypes = {
+    card: PropTypes.bool.isRequired,
+    toggleHandler: PropTypes.func.isRequired,
+    onStatusChange: PropTypes.func.isRequired,
+    searchHandler: PropTypes.func.isRequired,
+    changeCardLayout: PropTypes.func.isRequired,
+};
+
+export default BatchHeaderTrainer;
