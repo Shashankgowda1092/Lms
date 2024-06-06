@@ -19,7 +19,7 @@ export function Course() {
     courseName: "",
     level: "",
     courseID: 0,
-    duration: "", // New state for course duration
+    courseDuration: "", // Updated state for course duration
   });
 
   const navigate = useNavigate();
@@ -115,7 +115,7 @@ export function Course() {
   const handleAddTopics = () => {
     if (courseData.courseID || courseData.courseName) {
       if (selectDisabled) {
-        if (courseData.courseName && courseData.level && courseData.duration) {
+        if (courseData.courseName && courseData.level && courseData.courseDuration) {
           axios
             .post(`${import.meta.env.VITE_API_URL}/course`, courseData, {
               headers: {
@@ -133,7 +133,7 @@ export function Course() {
               const newCourseId = response.data.courseId;
 
               setTimeout(() => {
-                navigate("/topics", { state: { courseId: newCourseId } });
+                navigate("/topics", { state: { courseId: newCourseId, courseDuration: courseData.courseDuration } });
               }, 1200);
             })
             .catch((error) => {
@@ -269,6 +269,8 @@ export function Course() {
                     value={courseData.courseName}
                     onChange={handleChange}
                   />
+                  <Typography>Ex:Python </Typography>
+                  <Typography>Start with a capital letter</Typography>
                 </div>
                 <div className="mb-4">
                   <Select
@@ -288,13 +290,15 @@ export function Course() {
    
                  <div className="mb-4">
                    <Input
-                     id="duration"
-                     name="duration"
+                     id="courseDuration"
+                     name="courseDuration"
                      variant="outlined"
-                     label="Course Duration"
-                     value={courseData.duration}
+                     label="Course Duration in Days"
+                     value={courseData.courseDuration}
                      onChange={handleChange}
                    />
+                   <Typography className="mt-5">Enter the number of working days in which the course can be completed</Typography>
+                   <Typography>Do not enter in decimal value Ex:1.5</Typography>
                  </div>
                </div>
                )}

@@ -212,7 +212,7 @@ export default function BulkUpload() {
         <DialogHeader>Image Preview</DialogHeader>
         <DialogBody divider>
           <div className="flex justify-center">
-            <img src="src\Assets\bulkcourse.png" alt="Preview" className="max-w-full h-auto" style={{ maxHeight: '80vh' }} />
+            <img src="src\Assets\bulkcourse1.png" alt="Preview" className="max-w-full h-auto" style={{ maxHeight: '80vh' }} />
           </div>
         </DialogBody>
         <DialogFooter>
@@ -223,7 +223,7 @@ export default function BulkUpload() {
       </Dialog>
 
 
-      {/* Link to open the image modal */}
+
 
     </div>
   );

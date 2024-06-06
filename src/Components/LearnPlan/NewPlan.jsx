@@ -82,6 +82,7 @@ export function NewPlan() {
   const handleCourseItemClick = (value) => {
     if (selectedCourses.includes(value)) {
       setSelectedCourses(selectedCourses.filter((course) => course !== value));
+      setCoursesToBeAdded(coursesToBeAdded.filter((course) => course.courseName !== value));
     } else {
       setSelectedCourses([...selectedCourses, value]);
       setCoursesToBeAdded([
@@ -90,9 +91,6 @@ export function NewPlan() {
       ]);
     }
   };
-
-  // console.log("selectedCourses", selectedCourses);
-  // console.log("coursesToBeAdded", coursesToBeAdded);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -139,9 +137,6 @@ export function NewPlan() {
       }, 1200);
     }
   };
-
-
-  // console.log(courseItems);
 
   return (
     <div className="h-screen w-full flex justify-center items-center" style={{userSelect:"none"}}>
@@ -205,6 +200,7 @@ export function NewPlan() {
                 value={planName}
                 onChange={handleChangePlanName}
               />
+              <Typography>Ex: Bootcamp Training </Typography>
             </div>
             <div className="mb-4">
               <Select
@@ -258,9 +254,6 @@ export function NewPlan() {
                           containerProps={{ className: "p-0" }}
                           className="hover:before:content-none"
                           checked={selectedCourses.includes(course.courseName)}
-                          // onChange={() =>
-                          //   handleCourseItemClick(course.courseName)
-                          // }
                         />
                         {course.courseName}
                       </label>
