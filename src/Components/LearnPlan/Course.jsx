@@ -19,7 +19,7 @@ export function Course() {
     courseName: "",
     level: "",
     courseID: 0,
-    courseDuration: "", // Updated state for course duration
+    courseDuration: "",
   });
 
   const navigate = useNavigate();
@@ -99,6 +99,7 @@ export function Course() {
       courseID: courseSelectedFromDropdown[0].courseId,
       courseName: value,
       level: courseSelectedFromDropdown[0].level,
+      courseDuration: courseSelectedFromDropdown[0].courseDuration,
     }));
   };
 
@@ -149,7 +150,7 @@ export function Course() {
       } else {
         setSuccessAlert(true);
         setTimeout(() => {
-          navigate("/topics", { state: { courseId: courseData.courseID } });
+          navigate("/topics", { state: { courseId: courseData.courseID, courseDuration: courseData.courseDuration } });
         }, 2000);
       }
     } else {
@@ -216,7 +217,7 @@ export function Course() {
                 value={searchCourse}
                 onChange={handleSearch}
                 onClick={handleInputClick}
-                // onBlur={handleSearchBlur}
+              // onBlur={handleSearchBlur}
               />
               {showCourseList && (
                 <div
@@ -225,35 +226,36 @@ export function Course() {
                 >
                   {searchCourse
                     ? courseItem
-                        .filter((item) =>
-                          item.courseName
-                            .toLowerCase()
-                            .includes(searchCourse.toLowerCase())
-                        )
-                        .map((filteredItem) => (
-                          <div
-                            key={filteredItem.courseID}
-                            onClick={() => {
-                              handleCourseItemChange(filteredItem.courseName);
-                              setShowCourseList(false);
-                            }}
-                            className=" text-sm cursor-pointer  pb-2 pl-2 hover:bg-gray-400 text-gray-600 hover:text-black rounded-md "
-                          >
-                            {filteredItem.courseName}
-                          </div>
-                        ))
-                    : courseItem.map((item) => (
+                      .filter((item) =>
+                        item.courseName
+                          .toLowerCase()
+                          .includes(searchCourse.toLowerCase())
+                      )
+                      .map((filteredItem) => (
                         <div
-                          key={item.courseID}
+                          key={filteredItem.courseID}
                           onClick={() => {
-                            handleCourseItemChange(item.courseName);
+                            handleCourseItemChange(filteredItem.courseName);
                             setShowCourseList(false);
                           }}
-                          className="text-sm cursor-pointer pb-2 pl-2 hover:bg-gray-300 text-gray-600 hover:text-black rounded-md "
+                          className=" text-sm cursor-pointer  pb-2 pl-2 hover:bg-gray-400 text-gray-600 hover:text-black rounded-md "
                         >
-                          {item.courseName}
+                          {filteredItem.courseName}
                         </div>
-                      ))}
+                      ))
+                    : courseItem.map((item) => (
+                      <div
+                        key={item.courseID}
+                        onClick={() => {
+                          handleCourseItemChange(item.courseName);
+                          setShowCourseList(false);
+                        }}
+                        className="text-sm cursor-pointer pb-2 pl-2 hover:bg-gray-300 text-gray-600 hover:text-black rounded-md "
+                      >
+                        {item.courseName}
+
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -279,54 +281,55 @@ export function Course() {
                     onChange={handleChangeLevel}
                   >
                     <Option value="basic">Basic</Option>
-                    <Option
-                     value="intermediate"
-                     >
-                       Intermediate
-                     </Option>
-                     <Option value="advance">Advance</Option>
-                   </Select>
-                 </div>
-   
-                 <div className="mb-4">
-                   <Input
-                     id="courseDuration"
-                     name="courseDuration"
-                     variant="outlined"
-                     label="Course Duration in Days"
-                     value={courseData.courseDuration}
-                     onChange={handleChange}
-                   />
-                   <Typography className="mt-5">Enter the number of working days in which the course can be completed</Typography>
-                   <Typography>Do not enter in decimal value Ex:1.5</Typography>
-                 </div>
-               </div>
-               )}
-   
-               {viewAddCourseButton && (
-                 <div className="mb-4 flex justify-end">
-                   <Button
-                     ripple={true}
-                     onClick={handleButtonClick}
-                     className="bg-[#023047] text-white"
-                   >
-                     Add New Course
-                   </Button>
-                 </div>
-               )}
-   
-               <div className="mb-4 flex justify-end">
-                 <Button
-                   ripple={true}
-                   onClick={handleAddTopics}
-                   className="bg-[#023047] text-white"
-                 >
-                   Add Topics
-                 </Button>
-               </div>
-             </form>
-           </CardBody>
-         </Card>
-       </div>
-     );
-   }
+                    <Option value="intermediate">Intermediate</Option>
+                    <Option value="advance">Advance</Option>
+                  </Select>
+                </div>
+
+                <div className="mb-4">
+                  <Input
+                    id="courseDuration"
+                    name="courseDuration"
+                    variant="outlined"
+                    label="Course Duration in Days"
+                    value={courseData.courseDuration}
+                    onChange={handleChange}
+                  />
+                  <Typography className="mt-5">
+                    Enter the number of working days in which the course can be
+                    completed
+                  </Typography>
+                  <Typography>
+                    Do not enter in decimal value Ex:1.5
+                  </Typography>
+                </div>
+              </div>
+            )}
+
+            {viewAddCourseButton && (
+              <div className="mb-4 flex justify-end">
+                <Button
+                  ripple={true}
+                  onClick={handleButtonClick}
+                  className="bg-[#023047] text-white"
+                >
+                  Add New Course
+                </Button>
+              </div>
+            )}
+
+            <div className="mb-4 flex justify-end">
+              <Button
+                ripple={true}
+                onClick={handleAddTopics}
+                className="bg-[#023047] text-white"
+              >
+                Add Topics
+              </Button>
+            </div>
+          </form>
+        </CardBody>
+      </Card>
+    </div>
+  );
+}

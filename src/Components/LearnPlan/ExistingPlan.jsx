@@ -31,23 +31,24 @@ export function ExistingPlan() {
   const [endDateErrors, setEndDateErrors] = useState([false]);
   const [alert, setAlert] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
- 
- 
- 
- 
- 
+
+
+
+
+
   useEffect(() => {
     // Fetch internal trainers on component mount
     fetchInternalTrainers();
-   
+
   }, []);
- 
+
 
 
   const fetchLearningPlans = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/learning-plan`, {
-        headers: {...myHeaders,
+        headers: {
+          ...myHeaders,
           Authorization: `Bearer ${sessionStorage.getItem('auth')}`,
           // Add other headers if necessary
         },
@@ -65,50 +66,51 @@ export function ExistingPlan() {
   useEffect(() => {
     fetchLearningPlans();
   }, []);
- 
-// Update the initial state setting in the useEffect
-useEffect(() => {
-  if (selectedPlanId) {
-    const fetchPlanDetails = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/learning-plan/${selectedPlanId}`, {
-          headers: {...myHeaders,
-            Authorization: `Bearer ${sessionStorage.getItem('auth')}`,
-            // Add other headers if necessary
-          },
-        });
-        setPlanDetails(response.data);
-        setHideAddNewPlan(true);
-        // Initialize courseStates with default values
-        setCourseStates(
-          response.data.courses.map((course) => ({
-            showInternalTrainers: false,
-            showExternalTrainers: false,
-            internalTrainer: "",
-            internalTrainerId: 0, // Add this line
-            externalTrainerName: "",
-            selfPacedLearning: "",
-          }))
-        );
-      } catch (error) {
-        setHideAddNewPlan(false);
-        setAlert("Error fetching plan details");
-        console.error("Error fetching plan details:", error);
-      }
-    };
 
-    fetchPlanDetails();
-  } else {
-    // Reset planDetails and courseStates if no plan is selected
-    setPlanDetails(null);
-    setCourseStates([]);
-  }
-}, [selectedPlanId]);
- 
+  // Update the initial state setting in the useEffect
+  useEffect(() => {
+    if (selectedPlanId) {
+      const fetchPlanDetails = async () => {
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/learning-plan/${selectedPlanId}`, {
+            headers: {
+              ...myHeaders,
+              Authorization: `Bearer ${sessionStorage.getItem('auth')}`,
+              // Add other headers if necessary
+            },
+          });
+          setPlanDetails(response.data);
+          setHideAddNewPlan(true);
+          // Initialize courseStates with default values
+          setCourseStates(
+            response.data.courses.map((course) => ({
+              showInternalTrainers: false,
+              showExternalTrainers: false,
+              internalTrainer: "",
+              internalTrainerId: 0, // Add this line
+              externalTrainerName: "",
+              selfPacedLearning: "",
+            }))
+          );
+        } catch (error) {
+          setHideAddNewPlan(false);
+          setAlert("Error fetching plan details");
+          console.error("Error fetching plan details:", error);
+        }
+      };
+
+      fetchPlanDetails();
+    } else {
+      // Reset planDetails and courseStates if no plan is selected
+      setPlanDetails(null);
+      setCourseStates([]);
+    }
+  }, [selectedPlanId]);
+
   const handleSelectPlan = (selectedValue) => {
     setSelectedPlanId(selectedValue);
   };
- 
+
   const openInternalTrainer = (index) => {
     setCourseStates((prevStates) => {
       const newState = [...prevStates];
@@ -120,7 +122,7 @@ useEffect(() => {
       return newState;
     });
   };
- 
+
   const openExternalTrainer = (index) => {
     setCourseStates((prevStates) => {
       const newState = [...prevStates];
@@ -132,7 +134,7 @@ useEffect(() => {
       return newState;
     });
   };
- 
+
   const fetchInternalTrainers = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_GOWSIC}/user/role/trainer`, {
@@ -147,33 +149,33 @@ useEffect(() => {
       console.error('Error fetching internal trainers:', error);
     }
   };
- 
-// Update handleInternalTrainerName function
-// Update handleInternalTrainerName function
-const handleInternalTrainerName = (index, value) => {
-  const selectedTrainer = assignedInternalTrainers.find(
-    (trainer) => trainer.firstName + trainer.lastName === value
-  );
- 
-  // Log statement to check selectedTrainer and internalTrainerId
-  console.log("Selected Trainer:", selectedTrainer);
-  console.log("Selected Trainer Id:", selectedTrainer?.employeeId);
- 
-  if (selectedTrainer) {
-    setCourseStates((prevStates) => {
-      const newState = [...prevStates];
-      newState[index] = {
-        ...newState[index],
-        internalTrainer: value,
-        internalTrainerId: selectedTrainer.employeeId, // Set internalTrainerId to employeeId
-      };
-      return newState;
-    });
-  }
-};
- 
- 
- 
+
+  // Update handleInternalTrainerName function
+  // Update handleInternalTrainerName function
+  const handleInternalTrainerName = (index, value) => {
+    const selectedTrainer = assignedInternalTrainers.find(
+      (trainer) => trainer.firstName + trainer.lastName === value
+    );
+
+    // Log statement to check selectedTrainer and internalTrainerId
+    console.log("Selected Trainer:", selectedTrainer);
+    console.log("Selected Trainer Id:", selectedTrainer?.employeeId);
+
+    if (selectedTrainer) {
+      setCourseStates((prevStates) => {
+        const newState = [...prevStates];
+        newState[index] = {
+          ...newState[index],
+          internalTrainer: value,
+          internalTrainerId: selectedTrainer.employeeId, // Set internalTrainerId to employeeId
+        };
+        return newState;
+      });
+    }
+  };
+
+
+
   const handleExternalTrainerName = (index, value) => {
     setCourseStates((prevStates) => {
       const newState = [...prevStates];
@@ -181,7 +183,7 @@ const handleInternalTrainerName = (index, value) => {
       return newState;
     });
   };
- 
+
   const selfBased = (index) => {
     setCourseStates((prevStates) => {
       const newState = [...prevStates];
@@ -192,9 +194,20 @@ const handleInternalTrainerName = (index, value) => {
       return newState;
     });
   };
- 
   const handleDateChange = (index, dateType, date) => {
     if (dateType === "startDate") {
+      const today = new Date();
+  
+      // Ensure start date is not earlier than today
+      if (date < today) {
+        date = today;
+      }
+  
+      // Ensure start date is not on Saturday (6) or Sunday (0)
+      while (date.getDay() === 6 || date.getDay() === 0) {
+        date.setDate(date.getDate() + 1);
+      }
+  
       setStartDate(date);
       setCourseDates((prevDates) => ({
         ...prevDates,
@@ -203,33 +216,52 @@ const handleInternalTrainerName = (index, value) => {
           [dateType]: date,
         },
       }));
-      const startDateString = dateFormater(date);
-      console.log("dateFormaterOutput", startDateString);
-      const startDateYearFormat = formatDate(startDateString);
-      setCourseDatesCorrectFormat((prevDates) => ({
-        ...prevDates,
-        [index]: {
-          ...prevDates[index],
-          [dateType]: startDateYearFormat,
-        },
-      }));
+  
+      const courseDuration = planDetails.courses[index].courseDuration; // Assuming courseDuration is in days
+  
+      if (courseDuration && date) {
+        let endDate = new Date(date);
+        let daysToAdd = courseDuration - 1; // Start date is not included, so we subtract 1
+        let count = 0;
+  
+        // Loop through each day and skip weekends
+        while (daysToAdd > 0) {
+          endDate.setDate(endDate.getDate() + 1);
+  
+          // Check if it's not a weekend
+          if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+            daysToAdd--;
+          }
+  
+          count++;
+          // Safety check to avoid infinite loop
+          if (count > courseDuration * 2) {
+            break;
+          }
+        }
+  
+        setEndDate(endDate); // Update endDate in state
+  
+        const endDateString = dateFormater(endDate);
+        const endDateYearFormat = formatDate(endDateString);
+  
+        setCourseDatesCorrectFormat((prevDates) => ({
+          ...prevDates,
+          [index]: {
+            ...prevDates[index],
+            endDate: endDateYearFormat,
+          },
+        }));
+      }
     } else {
+      // Handle endDate change
       setEndDate(date);
- 
-      //courseDates[index]?.startDate
+  
       const startDateString = dateFormater(courseDates[index]?.startDate);
       const endDateString = dateFormater(date);
- 
-      //   setCourseDatesCorrectFormat((prevDates) => ({
-      //     ...prevDates,
-      //     [index]: {
-      //       ...prevDates[index],
-      //       [dateType]: startDateString,
-      //     },
-      //   }));
- 
+  
       const endDateYearFormat = formatDate(endDateString);
- 
+  
       setCourseDatesCorrectFormat((prevDates) => ({
         ...prevDates,
         [index]: {
@@ -237,23 +269,18 @@ const handleInternalTrainerName = (index, value) => {
           [dateType]: endDateYearFormat,
         },
       }));
- 
+  
       if (startDateString && endDateString) {
         const startDate = new Date(courseDates[index]?.startDate);
         const endDate = new Date(date);
- 
-        console.log("startDate", startDate);
-        console.log("endDate", endDate);
- 
+  
         if (endDate < startDate) {
-          // Set error for this index if end date is less than start date
           setEndDateErrors((prevErrors) => {
             const newErrors = [...prevErrors];
             newErrors[index] = true;
             return newErrors;
           });
         } else {
-          // Reset error for this index if end date is valid
           setEndDateErrors((prevErrors) => {
             const newErrors = [...prevErrors];
             newErrors[index] = false;
@@ -261,7 +288,7 @@ const handleInternalTrainerName = (index, value) => {
           });
         }
       }
- 
+  
       setCourseDates((prevDates) => ({
         ...prevDates,
         [index]: {
@@ -271,46 +298,51 @@ const handleInternalTrainerName = (index, value) => {
       }));
     }
   };
+  
+
+
+
+
   function formatDate(inputDate) {
     const parts = inputDate.split("/");
     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
- 
+
     return formattedDate;
   }
- 
+
   const dateFormater = (value) => {
     const date = new Date(value);
     const formattedDate = date.toLocaleDateString("en-GB");
     // console.log(formattedDate);
     return formattedDate;
   };
- 
+
   //   useEffect(() => {
   //     if (startDate && endDate) {
   //       const startDateFormat = dateFormater(startDate);
   //       const endDateFormat = dateFormater(endDate);
- 
+
   //       const dateChecker =
   //         startDateFormat.replace(/\//g, "") - endDateFormat.replace(/\//g, "");
   //       if (dateChecker < 0) {
   //       }
   //     }
   //   });
- 
+
   //   console.log("start", startDate);
   //   console.log("end", endDate);
- 
+
   //   useEffect(() => {
   //     const startDateString = dateFormater(startDate);
   //     const endDateString = dateFormater(endDate);
- 
+
   //     if (startDateString && endDateString) {
   //       const dateChecker =
   //         startDateString.replace(/\//g, "") - endDateString.replace(/\//g, "");
   //       console.log(dateChecker);
   //       if (dateChecker < 0) {
   //         console.log("correct dates");
- 
+
   //         setEndDateErrors(false);
   //       } else {
   //         console.log("wrong dates");
@@ -318,7 +350,7 @@ const handleInternalTrainerName = (index, value) => {
   //       }
   //     }
   //   }, [endDate]);
- 
+
 
   const handleSubmit = async () => {
     const batchCourseData = planDetails.courses.map((course, index) => {
@@ -348,7 +380,8 @@ const handleInternalTrainerName = (index, value) => {
     if (!alert && endDateErrors.every((arr) => !arr)) {
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/batch-course/multiple`, batchCourseData, {
-          headers: {...myHeaders,
+          headers: {
+            ...myHeaders,
             Authorization: `Bearer ${sessionStorage.getItem('auth')}`,
             'Content-Type': 'application/json',
           },
@@ -359,7 +392,8 @@ const handleInternalTrainerName = (index, value) => {
         const patchResponse = await axios.patch(`${import.meta.env.VITE_API_URL}/batch/learning-plan/${batchId}`, {
           learningPlanId: selectedPlanId,
         }, {
-          headers: {...myHeaders,
+          headers: {
+            ...myHeaders,
             Authorization: `Bearer ${sessionStorage.getItem('auth')}`,
             'Content-Type': 'application/json',
           },
@@ -390,7 +424,7 @@ const handleInternalTrainerName = (index, value) => {
       }, 1200);
     }
   };
- 
+
   return (
     <div className="w-full h-screen flex justify-center items-center bg-gray-200">
       {alert && (
@@ -439,7 +473,7 @@ const handleInternalTrainerName = (index, value) => {
             {!HideAddNewPlan && (
               <div className="mb-4 flex flex-col gap-2">
                 <label>BATCH NAME: </label>
- 
+
                 <Button
                   className="bg-[#023047] text-white"
                   onClick={() => navigate("/newplan")}
@@ -471,12 +505,11 @@ const handleInternalTrainerName = (index, value) => {
                 </p>
               </div>
             )}
- 
+
             <div>
               <div
-                className={`mb-4 relative ${
-                  HideAddNewPlan ? "top-[10px]" : "top-[-60px]"
-                }`}
+                className={`mb-4 relative ${HideAddNewPlan ? "top-[10px]" : "top-[-60px]"
+                  }`}
               >
                 <Select
                   variant="outlined"
@@ -518,7 +551,7 @@ const handleInternalTrainerName = (index, value) => {
                         </h4>
                       </div>
                     </div>
- 
+
                     <div>
                       {planDetails.courses.map((course, index) => (
                         <Card key={index} className="mt-4">
@@ -527,6 +560,11 @@ const handleInternalTrainerName = (index, value) => {
                               {" "}
                               <span className="font-bold">Course Name:</span>
                               {course.courseName}
+                            </h5>
+                            <h5>
+                              {" "}
+                              <span className="font-bold">Course Duration:</span>
+                              {course.courseDuration}
                             </h5>
                             <p>
                               {" "}
@@ -570,16 +608,16 @@ const handleInternalTrainerName = (index, value) => {
                                       handleInternalTrainerName(index, value)
                                     }
                                   >
-                              {assignedInternalTrainers && assignedInternalTrainers.map((item) => (
-                                <Option
-                                  key={item.employeeId}
-                                  value={item.firstName + item.lastName}
-                                  onClick={() => handleInternalTrainerName(index, item.firstName + " " + item.lastName, item.employeeId)} // Pass employeeId here
-                                >
-                                  {item.firstName + " " + item.lastName}
-                                </Option>
-                                ))}
- 
+                                    {assignedInternalTrainers && assignedInternalTrainers.map((item) => (
+                                      <Option
+                                        key={item.employeeId}
+                                        value={item.firstName + item.lastName}
+                                        onClick={() => handleInternalTrainerName(index, item.firstName + " " + item.lastName, item.employeeId)} // Pass employeeId here
+                                      >
+                                        {item.firstName + " " + item.lastName}
+                                      </Option>
+                                    ))}
+
                                   </Select>
                                 </div>
                               )}
@@ -614,24 +652,38 @@ const handleInternalTrainerName = (index, value) => {
                                 placeholderText="Select start date"
                                 className="border p-2 rounded-lg"
                               />
+                              <Typography>Select working days only</Typography>
                             </div>
-                            <div className="mb-4">
-                              <label className="block text-sm font-medium text-gray-700">
-                                End Date
-                              </label>
+                            <div >
+
+                              <div className="mb-4">
                               <ReactDatePicker
-                                className={`border p-2 rounded-lg ${
-                                  endDateErrors[index]
-                                    ? "border-red-500 focus:border-red-500"
-                                    : "border-gray-200"
-                                }`}
                                 selected={courseDates[index]?.endDate}
-                                onChange={(date) =>
-                                  handleDateChange(index, "endDate", date)
-                                }
-                                dateFormat="dd/MM/yyyy"
-                                placeholderText="Select end date"
+                                onChange={(date) => handleDateChange(index, "endDate", date)}
+                                disabled 
                               />
+                                <label className="block text-sm font-medium text-gray-700">
+                                  End Date
+                                </label>
+                                <Input
+                                  className={`border p-2 rounded-lg ${endDateErrors[index]
+                                      ? "border-red-500 focus:border-red-500"
+                                      : "border-gray-200"
+                                    }`}
+                                  value={dateFormater(courseDatesCorrectFormat[index]?.endDate)}
+                                  readOnly
+                                />
+                                {endDateErrors[index] && endDateErrors[index] ? (
+                                  <p className="text-red-500 text-sm mt-1 ml-1">
+                                    *Invalid Date Warning: Please check the date.
+                                  </p>
+                                ) : null}
+                              </div>
+
+
+
+
+
                               {endDateErrors[index] && endDateErrors[index] ? (
                                 <p className="text-red-500 text-sm mt-1 ml-1">
                                   *Invalid Date Warning: Please check the date.
