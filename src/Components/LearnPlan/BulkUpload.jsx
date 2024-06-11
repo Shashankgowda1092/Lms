@@ -1,7 +1,7 @@
 import { Alert, Button, Card, Dialog, DialogHeader, DialogBody, DialogFooter } from "@material-tailwind/react";
 import axios from "axios";
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { myHeaders } from '../../Services/IpAddress';
 
 export default function BulkUpload() {
@@ -114,6 +114,10 @@ export default function BulkUpload() {
   const openImageModal = () => setImageModalOpen(true);
   const closeImageModal = () => setImageModalOpen(false);
 
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+  };
+
   return (
     <div className="h-screen w-full flex justify-center items-center bg-gray-100">
       {successAlert && (
@@ -170,7 +174,24 @@ export default function BulkUpload() {
           Download the Sample Format and Upload File
         </div>
 
-        <div className="w-[90%] flex flex-col text-center">
+        {selectedFile && (
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-col">
+              <p className="text-sm">Selected File: {selectedFile.name}</p>
+              <p className="text-sm">
+                Size: {(selectedFile.size / 1024).toFixed(2)}Kb
+              </p>
+            </div>
+            <button
+              className="ml-2 text-red-500 hover:text-red-700"
+              onClick={handleRemoveFile}
+            >
+              &#10005;
+            </button>
+          </div>
+        )}
+
+        <div className="w-[80%] flex flex-col text-center">
           <div className="row1">
             <Button
               size="sm"
@@ -180,26 +201,24 @@ export default function BulkUpload() {
               Download sample format
             </Button>
           </div>
-          <Button color="blue" onClick={openImageModal}>
-            Click here to view image
+          <Button
+          className="px-0 py-1 mt-2 text-xs w-[60%] flex justify-center items-center text-center mx-auto"
+            color="blue"
+            onClick={openImageModal}
+            // className="px-0 py-1 mt-1 text-xs" // Adjust padding and text size
+          >
+            Preview Sample Format
           </Button>
-
-          {selectedFile && (
-            <div className="row2 flex flex-row justify-between">
-              <p className="text-sm">Selected File: {selectedFile.name}</p>
-              <p className="text-sm">
-                Size: {(selectedFile.size / 1024).toFixed(2)}Kb
-              </p>
-            </div>
-          )}
         </div>
 
-        <div className="w-[90%] flex items-end justify-between relative bottom-[-20px]">
-          <Button variant="outlined" className="bg-[#023047] text-white w-[40%]">
-            Cancel
+        <div className="w-[90%] flex items-end justify-between relative bottom-[-20px] mt-0.5">
+        <Link to="/dashboard/admin">
+          <Button variant="outlined" className="bg-[#023047] text-white w-[100%]">
+          Cancel
           </Button>
+          </Link>
           <Button
-            className="w-[40%] bg-[#023047] text-white"
+            variant="outlined" className="bg-[#023047] text-white w-[30%]"
             onClick={handleUpload}
           >
             Finish
@@ -212,7 +231,7 @@ export default function BulkUpload() {
         <DialogHeader>Image Preview</DialogHeader>
         <DialogBody divider>
           <div className="flex justify-center">
-            <img src="src\Assets\bulkcourse1.png" alt="Preview" className="max-w-full h-auto" style={{ maxHeight: '80vh' }} />
+            <img src="src\Assets\bulkcourse1.png" alt="Preview" className="max-w-full h-auto" style={{ maxHeight: '60vh' }} />
           </div>
         </DialogBody>
         <DialogFooter>
@@ -221,10 +240,6 @@ export default function BulkUpload() {
           </Button>
         </DialogFooter>
       </Dialog>
-
-
-
-
     </div>
   );
 }

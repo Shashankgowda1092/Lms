@@ -197,17 +197,17 @@ export function ExistingPlan() {
   const handleDateChange = (index, dateType, date) => {
     if (dateType === "startDate") {
       const today = new Date();
-  
+
       // Ensure start date is not earlier than today
       if (date < today) {
         date = today;
       }
-  
+
       // Ensure start date is not on Saturday (6) or Sunday (0)
       while (date.getDay() === 6 || date.getDay() === 0) {
         date.setDate(date.getDate() + 1);
       }
-  
+
       setStartDate(date);
       setCourseDates((prevDates) => ({
         ...prevDates,
@@ -216,35 +216,35 @@ export function ExistingPlan() {
           [dateType]: date,
         },
       }));
-  
+
       const courseDuration = planDetails.courses[index].courseDuration; // Assuming courseDuration is in days
-  
+
       if (courseDuration && date) {
         let endDate = new Date(date);
         let daysToAdd = courseDuration - 1; // Start date is not included, so we subtract 1
         let count = 0;
-  
+
         // Loop through each day and skip weekends
         while (daysToAdd > 0) {
           endDate.setDate(endDate.getDate() + 1);
-  
+
           // Check if it's not a weekend
           if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
             daysToAdd--;
           }
-  
+
           count++;
           // Safety check to avoid infinite loop
           if (count > courseDuration * 2) {
             break;
           }
         }
-  
+
         setEndDate(endDate); // Update endDate in state
-  
+
         const endDateString = dateFormater(endDate);
         const endDateYearFormat = formatDate(endDateString);
-  
+
         setCourseDatesCorrectFormat((prevDates) => ({
           ...prevDates,
           [index]: {
@@ -256,12 +256,12 @@ export function ExistingPlan() {
     } else {
       // Handle endDate change
       setEndDate(date);
-  
+
       const startDateString = dateFormater(courseDates[index]?.startDate);
       const endDateString = dateFormater(date);
-  
+
       const endDateYearFormat = formatDate(endDateString);
-  
+
       setCourseDatesCorrectFormat((prevDates) => ({
         ...prevDates,
         [index]: {
@@ -269,11 +269,11 @@ export function ExistingPlan() {
           [dateType]: endDateYearFormat,
         },
       }));
-  
+
       if (startDateString && endDateString) {
         const startDate = new Date(courseDates[index]?.startDate);
         const endDate = new Date(date);
-  
+
         if (endDate < startDate) {
           setEndDateErrors((prevErrors) => {
             const newErrors = [...prevErrors];
@@ -288,7 +288,7 @@ export function ExistingPlan() {
           });
         }
       }
-  
+
       setCourseDates((prevDates) => ({
         ...prevDates,
         [index]: {
@@ -298,7 +298,7 @@ export function ExistingPlan() {
       }));
     }
   };
-  
+
 
 
 
@@ -557,19 +557,15 @@ export function ExistingPlan() {
                         <Card key={index} className="mt-4">
                           <CardBody>
                             <h5>
-                              {" "}
                               <span className="font-bold">Course Name:</span>
                               {course.courseName}
                             </h5>
                             <h5>
-                              {" "}
                               <span className="font-bold">Course Duration:</span>
                               {course.courseDuration}
                             </h5>
                             <p>
-                              {" "}
-                              <span className="font-bold ">Level:</span>{" "}
-                              {course.level}
+                              <span className="font-bold">Level:</span> {course.level}
                             </p>
                             <div className="mb-4 mt-3">
                               <Select
@@ -608,16 +604,14 @@ export function ExistingPlan() {
                                       handleInternalTrainerName(index, value)
                                     }
                                   >
-                                    {assignedInternalTrainers && assignedInternalTrainers.map((item) => (
+                                    {assignedInternalTrainers.map((item) => (
                                       <Option
                                         key={item.employeeId}
-                                        value={item.firstName + item.lastName}
-                                        onClick={() => handleInternalTrainerName(index, item.firstName + " " + item.lastName, item.employeeId)} // Pass employeeId here
+                                        value={`${item.firstName} ${item.lastName}`}
                                       >
-                                        {item.firstName + " " + item.lastName}
+                                        {`${item.firstName} ${item.lastName}`}
                                       </Option>
                                     ))}
-
                                   </Select>
                                 </div>
                               )}
@@ -650,47 +644,36 @@ export function ExistingPlan() {
                                 }
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="Select start date"
-                                className="border p-2 rounded-lg"
+                                className="border p-2 rounded-lg text-md"
                               />
                               <Typography>Select working days only</Typography>
                             </div>
-                            <div >
-
-                              <div className="mb-4">
-                              <ReactDatePicker
-                                selected={courseDates[index]?.endDate}
-                                onChange={(date) => handleDateChange(index, "endDate", date)}
-                                disabled 
-                              />
-                                <label className="block text-sm font-medium">
-                                  End Date
-                                </label>
-                                <Input 
-                                  className={`border p-2 rounded-lg ${endDateErrors[index]
-                                      ? "border-red-500 focus:border-red-500"
-                                      : "border-gray-200"
-                                    }`}
-                                  value={dateFormater(courseDatesCorrectFormat[index]?.endDate)}
+                            <div className="mb-4 ">
+                              <label className="block text-sm font-medium text-gray-700">
+                                End Date
+                              </label>
+                              <div className="w-10">
+                                <Input
+                                className="border p-2 rounded-lg text-md"
+                                size="lg"
+                                  value={
+                                    dateFormater(
+                                      courseDatesCorrectFormat[index]?.endDate
+                                    )
+                                  }
                                   readOnly
+                                 
                                 />
-                                {endDateErrors[index] && endDateErrors[index] ? (
-                                  <p className="text-red-500 text-sm mt-1 ml-1">
-                                    *Invalid Date Warning: Please check the date.
-                                  </p>
-                                ) : null}
-                              </div>
-
-
-
-
-
-                              {endDateErrors[index] && endDateErrors[index] ? (
+                                </div>
+                              
+                              {endDateErrors[index] && (
                                 <p className="text-red-500 text-sm mt-1 ml-1">
                                   *Invalid Date Warning: Please check the date.
                                 </p>
-                              ) : null}
+                              )}
                             </div>
                           </CardBody>
+
                         </Card>
                       ))}
                     </div>

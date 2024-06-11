@@ -226,86 +226,88 @@ export function Topics() {
               {topics.map((topic, topicIndex) => (
                 <div
                   key={topicIndex}
-                  className="border border-gray-300 p-4 rounded-md"
+                  className="border-4 border-black-300 p-4 rounded-md"
                 >
-                  <div className="form-group mt-1">
-                    <Input
-                      id={`topicName${topicIndex}`}
-                      name="topicName"
-                      label="Topic Name"
-                      value={topic.topicName}
-                      onChange={(e) => handleChangeTopic(topicIndex, e.target.value)}
-                      variant="outlined"
-                      margin="normal"
-                      required
-                    />
-                  <Typography>Ex: Introduction To Python</Typography>
-                  </div>
-                  <div className="form-group mt-1">
-                    <Input
-                      id={`topicDuration${topicIndex}`}
-                      name="topicDuration"
-                      type="number"
-                      label="Topic Duration (hours)"
-                      value={topic.topicDuration}
-                      onChange={(e) => handleChangeDuration(topicIndex, e.target.value)}
-                      variant="outlined"
-                      margin="normal"
-                      step="0.1"
-                      required
-                    />
-                    <Typography>Ex: For 1hr 30 mins .The entry should be 1.5</Typography>
-                  </div>
-                  {topic.subtopics.map((subtopic, subtopicIndex) => (
-                    <div key={subtopicIndex}>
-                      <div className="form-group mt-1">
-                        <Input
-                          id={`subtopicName${topicIndex}-${subtopicIndex}`}
-                          name="subtopicName"
-                          label="Subtopic Name"
-                          value={subtopic.subtopicName}
-                          onChange={(e) =>
-                            handleChangeSubtopic(topicIndex, subtopicIndex, e.target.value)
-                          }
-                          variant="outlined"
-                          margin="normal"
-                        />
-                        <Typography>Ex: Python Variables</Typography>
-                      </div>
-                      <div className="flex justify-end">
-                        <Button
-                          className="bg-red-600 text-white relative flex justify-center items-center w-16 h-50 custom-button"
-                          onClick={() => handleDeleteSubtopic(topicIndex, subtopicIndex)}
-                        >
-                          <svg
-                            fill="#ffffff"
-                            height="18px"
-                            width="64px"
-                            version="1.1"
-                            id="Layer_1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                            stroke="#ffffff"
-                          >
-                            <g id="SVGRepo_bgCarrier"></g>
-                            <g id="SVGRepo_tracerCarrier"></g>
-                            <g id="SVGRepo_iconCarrier">
-                              <path d="M42.7,469.3c0,23.5,19.1,42.7,42.7,42.7h341.3c23.5,0,42.7-19.1,42.7-42.7V192H42.7V469.3z M362.7,256h42.7v192h-42.7V256z M234.7,256h42.7v192h-42.7V256z M106.7,256h42.7v192h-42.7V256z M490.7,85.3h-128V42.7C362.7,19.1,343.5,0,320,0H192 c-23.5,0-42.7,19.1-42.7,42.7v42.7h-128C9.5,85.3,0,94.9,0,106.7V128c0,11.8,9.5,21.3,21.3,21.3h469.3c11.8,0,21.3-9.5,21.3-21.3 v-21.3C512,94.9,502.5,85.3,490.7,85.3z M320,85.3H192V42.7h128V85.3z"></path>
-                            </g>
-                          </svg>
-                        </Button>
-                      </div>
+                  <div className="border border-gray-300 p-4 rounded-md">
+                    <div className="form-group mt-1">
+                      <Input
+                        id={`topicName${topicIndex}`}
+                        name="topicName"
+                        label="Topic Name"
+                        value={topic.topicName}
+                        onChange={(e) => handleChangeTopic(topicIndex, e.target.value)}
+                        variant="outlined"
+                        margin="normal"
+                        required
+                      />
+                      <Typography>Ex: Introduction To Python</Typography>
                     </div>
-                  ))}
-                  <div className="mt-1 flex justify-end">
-                    <Button
-                      className="bg-[#023047] text-white"
-                      onClick={() => handleAddSubtopic(topicIndex)}
-                    >
-                      Add Subtopic
-                    </Button>
+                    <div className="form-group mt-1">
+                      <Input
+                        id={`topicDuration${topicIndex}`}
+                        name="topicDuration"
+                        type="number"
+                        label="Topic Duration (hours)"
+                        value={topic.topicDuration}
+                        onChange={(e) => handleChangeDuration(topicIndex, e.target.value)}
+                        variant="outlined"
+                        margin="normal"
+                        step="0.1"
+                        required
+                      />
+                      <Typography>Ex: For 1hr 30 mins .The entry should be 1.5</Typography>
+                    </div>
+                    {topic.subtopics.map((subtopic, subtopicIndex) => (
+                      <div key={subtopicIndex}>
+                        <div className="form-group mt-1 w-7">
+                          <Input
+                            id={`subtopicName${topicIndex}-${subtopicIndex}`}
+                            name="subtopicName"
+                            label="Subtopic Name"
+                            value={subtopic.subtopicName}
+                            onChange={(e) =>
+                              handleChangeSubtopic(topicIndex, subtopicIndex, e.target.value)
+                            }
+                            variant="outlined"
+                            margin="normal"
+                          />
+                          <Typography className="w-10">Ex: Python Variables</Typography>
+                        </div>
+                        <div className="flex justify-end">
+                          <Button
+                            className="bg-red-600 text-white relative flex justify-center items-center w-16 h-50 custom-button"
+                            onClick={() => handleDeleteSubtopic(topicIndex, subtopicIndex)}
+                          >
+                            <svg
+                              fill="#ffffff"
+                              height="18px"
+                              width="64px"
+                              version="1.1"
+                              id="Layer_1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 512 512"
+                              stroke="#ffffff"
+                            >
+                              <g id="SVGRepo_bgCarrier"></g>
+                              <g id="SVGRepo_tracerCarrier"></g>
+                              <g id="SVGRepo_iconCarrier">
+                                <path d="M42.7,469.3c0,23.5,19.1,42.7,42.7,42.7h341.3c23.5,0,42.7-19.1,42.7-42.7V192H42.7V469.3z M362.7,256h42.7v192h-42.7V256z M234.7,256h42.7v192h-42.7V256z M106.7,256h42.7v192h-42.7V256z M490.7,85.3h-128V42.7C362.7,19.1,343.5,0,320,0H192 c-23.5,0-42.7,19.1-42.7,42.7v42.7h-128C9.5,85.3,0,94.9,0,106.7V128c0,11.8,9.5,21.3,21.3,21.3h469.3c11.8,0,21.3-9.5,21.3-21.3 v-21.3C512,94.9,502.5,85.3,490.7,85.3z M320,85.3H192V42.7h128V85.3z"></path>
+                              </g>
+                            </svg>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="mt-1 flex justify-end">
+                      <Button
+                        className="bg-[#023047] text-white"
+                        onClick={() => handleAddSubtopic(topicIndex)}
+                      >
+                        Add Subtopic
+                      </Button>
+                    </div>
                   </div>
-                  <div className="mb-4 flex flex-col md:flex-row justify-around gap-1">
+                  <div className="mb-4 mt-2 flex flex-col md:flex-row justify-around gap-1">
                     <Button
                       className="bg-red-600 text-white relative flex justify-center items-center w-1/40 custom-button"
                       onClick={() => handleDeleteTopic(topicIndex)}
