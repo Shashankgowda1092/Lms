@@ -662,10 +662,10 @@ export function ExistingPlan() {
                                 onChange={(date) => handleDateChange(index, "endDate", date)}
                                 disabled 
                               />
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium">
                                   End Date
                                 </label>
-                                <Input
+                                <Input 
                                   className={`border p-2 rounded-lg ${endDateErrors[index]
                                       ? "border-red-500 focus:border-red-500"
                                       : "border-gray-200"
